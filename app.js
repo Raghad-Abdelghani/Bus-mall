@@ -1,16 +1,18 @@
 "use Strict";
 
 //getting the elements 
+let container=document.getElementById('images-div');
 
-let FirstImageElement=document.getElementById('firstimage');
+let firstImageElement=document.getElementById('firstimage');
 
-let MiddleImageElement=document.getElementById('middleimage');
-
-let LastImageElement=document.getElementById('lastimage');
+let middleImageElement=document.getElementById('middleimage');
+ 
+let lastImageElement=document.getElementById('lastimage');
 
 
 let maxAttempts=10;
 let userAttemptsCounter=0;
+
 
 
 // the random number index for the left image
@@ -20,8 +22,11 @@ let firstImageIndex;
 let middleImageIndex;
 
 //the random number index for the last image
-let lastImageIndex
+let lastImageIndex;
 
+let productNames=[];
+let votes=[];
+let shown=[];
 
 //making the constructor object
 
@@ -29,6 +34,8 @@ function Product(name, imgsource, timesShown){
     this.name=name;
     this.imgsource=imgsource;
     this.timesShown=timesShown;
+    this.votes=0;
+    this.timesShown=0;
 
     Product.allProducts.push(this)
 
@@ -50,7 +57,7 @@ new Product('pen', 'img/assets/pen.jpg');
 new Product('pet-sweep', 'img/assets/pet-sweep.jpg');
 new Product('scissors', 'img/assets/scissors.jpg');
 new Product('shark', 'img/assets/shark.jpg');
-new Product('sweep', 'img/assets/sweep.jpg');
+new Product('sweep', 'img/assets/sweep.png');
 new Product('tauntaun', 'img/assets/tauntaun.jpg');
 new Product('unicorn', 'img/assets/unicorn.jpg');
 new Product('usb', 'img/assets/usb.gif');
@@ -77,20 +84,78 @@ function generateRandomIndex() {
 
   lastImageIndex=generateRandomIndex();
 
-  while (firstImageIndex===middleImageIndex || middleImageIndex===lastImageIndex) {
+  while (firstImageIndex===middleImageIndex || middleImageIndex===lastImageIndex || firstImageIndex===lastImageIndex) {
     middleImageIndex=generateRandomIndex();
+    lastImageIndex===generateRandomIndex
     
- while (firstImageIndex===lastImageIndex )
-      lastImageIndex=generateRandomIndex();
 
 
+ 
 firstImageElement.src=Product.allProducts[firstImageIndex].imgsource;
 
 middleImageElement.src=Product.allProducts[middleImageIndex].imgsource;
 
-lastImageIndex.src=Product.allProducts[lastImageIndex].imgsource;
+lastImageElement.src=Product.allProducts[lastImageIndex].imgsource;
 }
   }
 
 renderThreeImages();
+
+
+
+function handleUserClick(event) {
+
+  if (userAttemptsCounter<=maxAttempts) {
+
+
+    if (event.target.id==='firstimage') {
+      
+      Product.allProducts[firstImageIndex].votes++
+
+    }else if(event.target.id==='middleimage'){
+      Product.allProducts[middleImageIndex].votes++;
+    }
+    else if(event.target.id==='lastimage'){
+      Product.allProducts[lastImageIndex].votes++
+    }else{
+      alert('please click on the images');
+      userAttemptsCounter--;
+    }
+
+    
+    renderThreeImages();
+
+
+  }else{
+    let button=document.getElementById('button');
+    button.hidden=false;
+    button.addEventListener('click',showingList);
+
+    
+    container.removeEventListener('click',handleUserClick);
+    console.log(Product.allProducts);
+    
+    for (let i = 0; i < Product.allProducts.length; i++) {
+
+      votes.push(Product.allProducts[i].votes);
+      shown.push(Product.allProducts[i].shown);
+    }
+
+    function showingList() {
+      let list=document.getElementById('results-list');
+      for (let i = 0; i < Product.allProducts.length; i++) {
+        let productResult=document.createElement('li');
+    
+        list.append(productResult);
+    
+        productResult.textContent=`${Product.allProducts[i].name} has ${Product.allProducts[i].votes} votes and was seen ${Product.allProducts[i].shown}`;
+        
+      }
+      
+      button.hidden=true;
+    }
+
+  }
+}
+
 
