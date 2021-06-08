@@ -118,9 +118,6 @@ function handleUserClick(event) {
 
     if (event.target.id === 'firstImage') {
 
-
-    if (event.target.id === 'firstImage') {
-
       Product.allProducts[firstImageIndex].votes++
 
       renderThreeImages();
@@ -181,5 +178,3 @@ function handleUserClick(event) {
 }
 
 
-
-}
