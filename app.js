@@ -1,22 +1,22 @@
 "use Strict";
-
+console.log('Hello')
 //getting the elements 
-let container=document.getElementById('images-div');
+let container = document.getElementById('image-div');
 
-let firstImageElement=document.getElementById('firstimage');
+let firstImageElement = document.getElementById('firstImage');
 
-let middleImageElement=document.getElementById('middleimage');
- 
-let lastImageElement=document.getElementById('lastimage');
+let middleImageElement = document.getElementById('middleImage');
+
+let lastImageElement = document.getElementById('lastImage');
 
 
-let maxAttempts=10;
-let userAttemptsCounter=0;
+let maxAttempts = 10;
+let userAttemptsCounter = 0;
 
 
 
 // the random number index for the left image
-let firstImageIndex; 
+let firstImageIndex;
 
 // the random number index for the middle image
 let middleImageIndex;
@@ -24,27 +24,28 @@ let middleImageIndex;
 //the random number index for the last image
 let lastImageIndex;
 
-let productNames=[];
-let votes=[];
-let shown=[];
+let productNames = [];
+let votes = [];
+let shown = [];
 
 //making the constructor object
 
-function Product(name, imgsource, timesShown){
-    this.name=name;
-    this.imgsource=imgsource;
-    this.timesShown=timesShown;
-    this.votes=0;
-    this.timesShown=0;
+function Product(name, imgsource) {
+  this.name = name;
+  this.imgsource = imgsource;
+  this.votes = 0;
+  this.shown = 0;
 
-    Product.allProducts.push(this)
+  Product.allProducts.push(this)
+
+  productNames.push(this.name)
 
 }
 
-Product.allProducts=[];
+Product.allProducts = [];
 
 new Product('bag', 'img/assets/bag.jpg');
-new Product('banana', 'img/assets/banana.jpg' );
+new Product('banana', 'img/assets/banana.jpg');
 new Product('bathroom', 'img/assets/bathroom.jpg');
 new Product('boots', 'img/assets/boots.jpg');
 new Product('breakfast', 'img/assets/breakfast.jpg');
@@ -69,72 +70,84 @@ new Product('wine-glass', 'img/assets/wine-glass.jpg');
 //generating random index
 
 function generateRandomIndex() {
-    
-    return Math.floor(Math.random() *Product.allProducts.length); 
-  }
 
-
-  //render
-
-  function renderThreeImages(){
-
-  firstImageIndex=generateRandomIndex();
-  
-  middleImageIndex=generateRandomIndex();
-
-  lastImageIndex=generateRandomIndex();
-
-  while (firstImageIndex===middleImageIndex || middleImageIndex===lastImageIndex || firstImageIndex===lastImageIndex) {
-    middleImageIndex=generateRandomIndex();
-    lastImageIndex===generateRandomIndex
-    
-
-
- 
-firstImageElement.src=Product.allProducts[firstImageIndex].imgsource;
-
-middleImageElement.src=Product.allProducts[middleImageIndex].imgsource;
-
-lastImageElement.src=Product.allProducts[lastImageIndex].imgsource;
+  return Math.floor(Math.random() * Product.allProducts.length);
 }
+
+
+//render
+
+function renderThreeImages() {
+
+  firstImageIndex = generateRandomIndex();
+
+  middleImageIndex = generateRandomIndex();
+
+  lastImageIndex = generateRandomIndex();
+
+  while (firstImageIndex === middleImageIndex || middleImageIndex === lastImageIndex || firstImageIndex === lastImageIndex) {
+    middleImageIndex = generateRandomIndex();
+    lastImageIndex = generateRandomIndex();
+
   }
+
+
+  firstImageElement.src = Product.allProducts[firstImageIndex].imgsource;
+  Product.allProducts[firstImageIndex].shown++;
+
+  middleImageElement.src = Product.allProducts[middleImageIndex].imgsource;
+  Product.allProducts[middleImageIndex].shown++;
+
+  lastImageElement.src = Product.allProducts[lastImageIndex].imgsource;
+  Product.allProducts[lastImageIndex].shown++;
+
+}
 
 renderThreeImages();
 
 
+container.addEventListener('click', handleUserClick);
 
 function handleUserClick(event) {
 
-  if (userAttemptsCounter<=maxAttempts) {
+  userAttemptsCounter++
+  
+  if (userAttemptsCounter <= maxAttempts) {
 
 
-    if (event.target.id==='firstimage') {
-      
+
+    if (event.target.id === 'firstImage') {
+
       Product.allProducts[firstImageIndex].votes++
 
-    }else if(event.target.id==='middleimage'){
+      renderThreeImages();
+
+    } else if (event.target.id === 'middleImage') {
       Product.allProducts[middleImageIndex].votes++;
+      renderThreeImages();
     }
-    else if(event.target.id==='lastimage'){
+    else if (event.target.id === 'lastImage') {
       Product.allProducts[lastImageIndex].votes++
-    }else{
+
+      renderThreeImages();
+
+    } else {
       alert('please click on the images');
       userAttemptsCounter--;
     }
 
-    
-    renderThreeImages();
+  }
 
 
-  }else{
-    let button=document.getElementById('button');
-    button.hidden=false;
-    button.addEventListener('click',showingList);
+  else {
+    let button = document.getElementById('button');
+    button.hidden = false;
+    button.addEventListener('click', showingList);
+  
 
-    
-    container.removeEventListener('click',handleUserClick);
+    container.removeEventListener('click', handleUserClick);
     console.log(Product.allProducts);
-    
+
     for (let i = 0; i < Product.allProducts.length; i++) {
 
       votes.push(Product.allProducts[i].votes);
@@ -142,20 +155,19 @@ function handleUserClick(event) {
     }
 
     function showingList() {
-      let list=document.getElementById('results-list');
+      let list = document.getElementById('results-list');
       for (let i = 0; i < Product.allProducts.length; i++) {
-        let productResult=document.createElement('li');
-    
+        let productResult = document.createElement('li');
+
         list.append(productResult);
-    
-        productResult.textContent=`${Product.allProducts[i].name} has ${Product.allProducts[i].votes} votes and was seen ${Product.allProducts[i].shown}`;
-        
+
+        productResult.textContent = `${Product.allProducts[i].name} has ${Product.allProducts[i].votes} votes and was seen ${Product.allProducts[i].shown}`;
+
       }
-      
-      button.hidden=true;
+
+      button.hidden = true;
     }
 
   }
+
 }
-
-
