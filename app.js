@@ -79,6 +79,31 @@ function generateRandomIndex() {
 
 function renderThreeImages() {
 
+
+  firstImageIndex = generateRandomIndex();
+
+  middleImageIndex = generateRandomIndex();
+
+  lastImageIndex = generateRandomIndex();
+
+  while (firstImageIndex === middleImageIndex || middleImageIndex === lastImageIndex || firstImageIndex === lastImageIndex) {
+    middleImageIndex = generateRandomIndex();
+    lastImageIndex = generateRandomIndex();
+
+  }
+
+
+  firstImageElement.src = Product.allProducts[firstImageIndex].imgsource;
+  Product.allProducts[firstImageIndex].shown++;
+
+  middleImageElement.src = Product.allProducts[middleImageIndex].imgsource;
+  Product.allProducts[middleImageIndex].shown++;
+
+  lastImageElement.src = Product.allProducts[lastImageIndex].imgsource;
+  Product.allProducts[lastImageIndex].shown++;
+
+
+
   firstImageIndex = generateRandomIndex();
 
   middleImageIndex = generateRandomIndex();
@@ -114,6 +139,8 @@ function handleUserClick(event) {
   
   if (userAttemptsCounter <= maxAttempts) {
 
+
+    if (event.target.id === 'firstImage') {
 
 
     if (event.target.id === 'firstImage') {
@@ -173,6 +200,10 @@ function handleUserClick(event) {
 
 
 
+
+
 }
 
 
+
+}
