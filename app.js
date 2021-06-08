@@ -10,7 +10,7 @@ let middleImageElement = document.getElementById('middleImage');
 let lastImageElement = document.getElementById('lastImage');
 
 
-let maxAttempts = 10;
+let maxAttempts = 25;
 let userAttemptsCounter = 0;
 
 
@@ -102,30 +102,6 @@ function renderThreeImages() {
   lastImageElement.src = Product.allProducts[lastImageIndex].imgsource;
   Product.allProducts[lastImageIndex].shown++;
 
-
-
-  firstImageIndex = generateRandomIndex();
-
-  middleImageIndex = generateRandomIndex();
-
-  lastImageIndex = generateRandomIndex();
-
-  while (firstImageIndex === middleImageIndex || middleImageIndex === lastImageIndex || firstImageIndex === lastImageIndex) {
-    middleImageIndex = generateRandomIndex();
-    lastImageIndex = generateRandomIndex();
-
-  }
-
-
-  firstImageElement.src = Product.allProducts[firstImageIndex].imgsource;
-  Product.allProducts[firstImageIndex].shown++;
-
-  middleImageElement.src = Product.allProducts[middleImageIndex].imgsource;
-  Product.allProducts[middleImageIndex].shown++;
-
-  lastImageElement.src = Product.allProducts[lastImageIndex].imgsource;
-  Product.allProducts[lastImageIndex].shown++;
-
 }
 
 renderThreeImages();
@@ -138,9 +114,6 @@ function handleUserClick(event) {
   userAttemptsCounter++
   
   if (userAttemptsCounter <= maxAttempts) {
-
-
-    if (event.target.id === 'firstImage') {
 
 
     if (event.target.id === 'firstImage') {
@@ -196,14 +169,3 @@ function handleUserClick(event) {
     }
 
   }
-
-
-
-
-
-
-}
-
-
-
-}
