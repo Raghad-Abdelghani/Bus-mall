@@ -44,6 +44,20 @@ function Product(name, imgsource) {
 
 Product.allProducts = [];
 
+
+function sendToLocal(){
+
+  let stringArr=JSON.stringify(Product.allProducts);
+  localStorage.setItem('product', stringArr);
+}
+
+function getData(){
+  let data= localStorage.getItem('product');
+  let parsed=JSON.parse(data)
+
+  Product.allProducts=parsed;
+}
+
 new Product('bag', 'img/assets/bag.jpg');
 new Product('banana', 'img/assets/banana.jpg');
 new Product('bathroom', 'img/assets/bathroom.jpg');
@@ -154,7 +168,7 @@ function handleUserClick(event) {
       votes.push(Product.allProducts[i].votes);
       shown.push(Product.allProducts[i].shown);
     }
-
+sendToLocal()
     myChart();
 
     function showingList() {
@@ -239,3 +253,5 @@ let myChart = new Chart(ctx, {
 });
 
 }
+
+getData();
